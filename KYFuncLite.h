@@ -46,14 +46,14 @@ namespace KYFuncLite {
 
 	public:
 		inline Socket() {
-#ifdef _WIN32
+#ifdef _WINSOCK2API_
 			try {
 				this->__openWinSocket();
 			}
 			catch (const std::exception& e) {
 				throw e;
 			}
-#endif // _WIN32
+#endif // _WINSOCK2API_
 		}
 
 		inline Socket(const SOCKET& socketIn) {
@@ -62,9 +62,9 @@ namespace KYFuncLite {
 
 		inline Socket(const int32_t& af, const int32_t& type, const int32_t& protocol) {
 			try {
-#ifdef _WIN32
+#ifdef _WINSOCK2API_
 				this->__openWinSocket();
-#endif // _WIN32
+#endif // _WINSOCK2API_
 				this->setSocket(af, type, protocol);
 			}
 			catch (const std::exception& e) {
@@ -74,9 +74,9 @@ namespace KYFuncLite {
 
 		inline ~Socket() {
 			this->closeSocket();
-#ifdef _WIN32
+#ifdef _WINSOCK2API_
 			this->__WSACleanUp();
-#endif // _WIN32
+#endif // _WINSOCK2API_
 		}
 
 		inline Socket& setSocket(const SOCKET& socketIn) {
@@ -216,7 +216,7 @@ namespace KYFuncLite {
 	private:
 		SOCKET _socket;
 
-#ifdef _WIN32
+#ifdef _WINSOCK2API_
 	private:
 		WSADATA _wsdata;
 		inline const void __openWinSocket() {
@@ -233,7 +233,7 @@ namespace KYFuncLite {
 				throw exception("WSA clean up error");
 			}
 		}
-#endif // _WIN32
+#endif // _WINSOCK2API_
 
 	};
 

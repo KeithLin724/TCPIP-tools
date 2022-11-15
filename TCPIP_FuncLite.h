@@ -92,13 +92,13 @@ namespace KYFuncLite {
 		std::int32_t err;
 		sockaddr_in  tcpServer;
 
-#ifdef _WIN32 // for window version 
+#ifdef _WINSOCK2API_ // for window version 
 		WSADATA  wsadata;
 		// 1. �}�� TCP Server
 		if ((err = WSAStartup(0x202, &wsadata)) != 0) {
 			throw std::invalid_argument("WSA ERROR");
 		}
-#endif
+#endif //_WINSOCK2API_
 
 		if ((tcpSock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
 			throw std::invalid_argument("Socket error");
@@ -142,12 +142,12 @@ namespace KYFuncLite {
 		std::int32_t err;
 		sockaddr_in  tcpClient;
 
-#ifdef _WIN32 // for windows version 
+#ifdef _WINSOCK2API_ // for windows version 
 		WSADATA  wsadata;
 		if ((err = WSAStartup(0x202, &wsadata)) != 0) {
 			throw std::invalid_argument("WSA ERROR");
 		}
-#endif
+#endif //_WINSOCK2API_
 
 		if ((tcpSock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
 			throw std::invalid_argument("Socket error");
