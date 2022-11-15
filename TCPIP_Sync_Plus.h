@@ -4,7 +4,7 @@
 
 // For TCPIP
 #ifdef _WIN32
-#define _WINSOCK_DEPRECATED_NO_WARNINGS 1  // ¨t²Î­n¨D
+#define _WINSOCK_DEPRECATED_NO_WARNINGS 1  // ï¿½tï¿½Î­nï¿½D
 #pragma comment(lib,"ws2_32.lib")
 #include <winsock2.h>
 #endif // _WIN32
@@ -16,48 +16,48 @@
 #include <iostream>
 
 inline int Start_UDP_Server(SOCKET* SSock, int Port) {
-	//SOCKET  SSock;    // ³q¹D³s½u¥N½X
-	// 1.ÅÜ¼Æ«Å§i
+	//SOCKET  SSock;    // ï¿½qï¿½Dï¿½sï¿½uï¿½Nï¿½X
+	// 1.ï¿½Ü¼Æ«Å§i
 	sockaddr_in Addr; // IP+Port+Protocol
 
-	// 2.³]©wWinsock/sock
+	// 2.ï¿½]ï¿½wWinsock/sock
 	int err = 0;
-	
+
 #ifdef _WINSOCK2API_
-	WSADATA Wsa;      // Winsock °Ñ¼Æ
-	if (err = WSAStartup(0x202, &Wsa) != 0) { // ±Ò°ÊWinsock
+	WSADATA Wsa;      // Winsock ï¿½Ñ¼ï¿½
+	if (err = WSAStartup(0x202, &Wsa) != 0) { // ï¿½Ò°ï¿½Winsock
 		return err;
 	}
 #endif // _WINSOCK2API_
 
-	*SSock = socket(AF_INET, SOCK_DGRAM, 0); // ¶}±ÒUDP³q¹D
+	* SSock = socket(AF_INET, SOCK_DGRAM, 0); // ï¿½}ï¿½ï¿½UDPï¿½qï¿½D
 
 	Addr.sin_family = AF_INET;
 	Addr.sin_port = htons(Port);
 	Addr.sin_addr.s_addr = htonl(INADDR_ANY);
 
-	// 3.±Ò°ÊUDP Server
+	// 3.ï¿½Ò°ï¿½UDP Server
 	bind(*SSock, (sockaddr*)&Addr, sizeof(sockaddr));
 	return 0;
 }
 
 inline int Start_UDP_Client(SOCKET* CSock, sockaddr* CAddr, const char* IP, int Port) {
-	// 1.ÅÜ¼Æ«Å§i
-	//SOCKET  SSock;    // ³q¹D³s½u¥N½X
+	// 1.ï¿½Ü¼Æ«Å§i
+	//SOCKET  SSock;    // ï¿½qï¿½Dï¿½sï¿½uï¿½Nï¿½X
 	sockaddr_in* Addr; // IP+Port+Protocol
 
 	Addr = (sockaddr_in*)CAddr;
-	// 2.³]©wWinsock/sock
-	
+	// 2.ï¿½]ï¿½wWinsock/sock
+
 	int err = 0;
 #ifdef _WINSOCK2API_
-	WSADATA Wsa;      // Winsock °Ñ¼Æ
-	if (err = WSAStartup(0x202, &Wsa) < 0) { // ±Ò°ÊWinsock
+	WSADATA Wsa;      // Winsock ï¿½Ñ¼ï¿½
+	if (err = WSAStartup(0x202, &Wsa) < 0) { // ï¿½Ò°ï¿½Winsock
 		return err;
 	}
 #endif // _WINSOCK2API_
 
-	*CSock = socket(AF_INET, SOCK_DGRAM, 0); // ¶}±ÒUDP³q¹D
+	* CSock = socket(AF_INET, SOCK_DGRAM, 0); // ï¿½}ï¿½ï¿½UDPï¿½qï¿½D
 
 	Addr->sin_family = AF_INET;
 	Addr->sin_port = htons(Port);
@@ -67,12 +67,12 @@ inline int Start_UDP_Client(SOCKET* CSock, sockaddr* CAddr, const char* IP, int 
 }
 
 // =======================================================================
-// ==================  ±Ò°Ê TCP Server(¨Ï¥Îthread±µ¨ü³s½u»P±µ¦¬¸ê®Æ)   ===
+// ==================  ï¿½Ò°ï¿½ TCP Server(ï¿½Ï¥ï¿½threadï¿½ï¿½ï¿½ï¿½ï¿½sï¿½uï¿½Pï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)   ===
 // =======================================================================
 #include <process.h>  // Project => Setting => C/C++ => Category=Code Generation => Use Runtime Library=Debug Multithreaded
 SOCKET   g_S_Socket, g_S_Socket1;
 DWORD    Thread_ID11;
-// °õ¦æºü¤lµ{¦¡
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½{ï¿½ï¿½
 VOID Thread_Func11(PVOID pvoid) {
 	char S1[5000];
 	int  i, Len = sizeof(sockaddr);
@@ -91,11 +91,11 @@ VOID Thread_Func11(PVOID pvoid) {
 }
 
 int  Start_TCP_Server(SOCKET* psockfd, WORD Port) {
-	
+
 	int      err;
 	struct   sockaddr_in  tcpserver;
 
-	// 1. ¶}±Ò TCP Server
+	// 1. ï¿½}ï¿½ï¿½ TCP Server
 #ifdef _WINSOCK2API_
 	WSADATA  wsadata;
 	if ((err = WSAStartup(0x202, &wsadata)) != 0) return -1;
@@ -111,18 +111,18 @@ int  Start_TCP_Server(SOCKET* psockfd, WORD Port) {
 	if ((err = listen(*psockfd, SOMAXCONN)) < 0) return -1;
 	g_S_Socket = *psockfd;
 
-	// 2. ¶}±Ò¤l°õ¦æºü
+	// 2. ï¿½}ï¿½Ò¤lï¿½ï¿½ï¿½ï¿½ï¿½
 	// Thread_ID11 = _beginthread(Thread_Func11, 0, NULL);
 
 	return 0;
 }
 
 // =======================================================================
-// ==================  ±Ò°Ê TCP Client   =================================
+// ==================  ï¿½Ò°ï¿½ TCP Client   =================================
 // =======================================================================
 SOCKET   g_C_Socket; // Global Variable
 DWORD    Thread_ID22;
-// °õ¦æºü¤lµ{¦¡
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½{ï¿½ï¿½
 VOID Thread_Func22(PVOID pvoid) {
 	char S1[2000];
 	int  i, j, Len = sizeof(sockaddr);
@@ -135,7 +135,7 @@ VOID Thread_Func22(PVOID pvoid) {
 
 		if (i > 0) {
 			S1[i] = 0;
-			// ¥h°£ ÃC¦â±±¨î½X(Remove Color Control Code) 
+			// ï¿½hï¿½ï¿½ ï¿½Cï¿½â±±ï¿½ï¿½X(Remove Color Control Code) 
 			for (j = 0; j < i; j++) {
 				if (S1[j] == 27) { // ESC
 					Flag = true;
@@ -165,7 +165,7 @@ VOID Thread_Func22(PVOID pvoid) {
 }
 
 inline int Start_TCP_Client(SOCKET* psockfd, WORD R_Port, const char* IP) {
-	
+
 	int      err;
 	sockaddr_in  tcpclient;
 
@@ -184,8 +184,8 @@ inline int Start_TCP_Client(SOCKET* psockfd, WORD R_Port, const char* IP) {
 
 	g_C_Socket = *psockfd;
 
-	// 2. ¶}±Ò¤l°õ¦æºü
-	Thread_ID22 = _beginthread(Thread_Func22, 0, NULL);
+	// 2. ï¿½}ï¿½Ò¤lï¿½ï¿½ï¿½ï¿½ï¿½
+	//Thread_ID22 = _beginthread(Thread_Func22, 0, NULL);
 
 
 	return 0;
