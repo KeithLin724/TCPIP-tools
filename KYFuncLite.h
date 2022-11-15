@@ -2,12 +2,19 @@
 #ifndef __KYFUNCLITE_H__
 #define __KYFUNCLITE_H__
 
+// for window 
+#ifdef _WIN32
 #define _WINSOCK_DEPRECATED_NO_WARNINGS 1
 
 #pragma comment(lib,"ws2_32.lib")
 #include <winsock2.h>
 // https://www.twblogs.net/a/5c3ed65fbd9eee35b21e0b01
+#endif // _WIN32
 
+// for linux 
+#ifdef __unix
+#include <sys/socket.h>
+#endif // __unix
 
 #include <sstream>
 #include <vector>
@@ -39,12 +46,14 @@ namespace KYFuncLite {
 
 	public:
 		inline Socket() {
+#ifdef _WIN32
 			try {
 				this->__openWinSocket();
 			}
 			catch (const std::exception& e) {
 				throw e;
 			}
+#endif // _WIN32
 		}
 
 		inline Socket(const SOCKET& socketIn) {
@@ -53,7 +62,9 @@ namespace KYFuncLite {
 
 		inline Socket(const int32_t& af, const int32_t& type, const int32_t& protocol) {
 			try {
+#ifdef _WIN32
 				this->__openWinSocket();
+#endif // _WIN32
 				this->setSocket(af, type, protocol);
 			}
 			catch (const std::exception& e) {
@@ -63,7 +74,9 @@ namespace KYFuncLite {
 
 		inline ~Socket() {
 			this->closeSocket();
-			this->WSACleanUp();
+#ifdef _WIN32
+			this->__WSACleanUp();
+#endif // _WIN32
 		}
 
 		inline Socket& setSocket(const SOCKET& socketIn) {
@@ -186,14 +199,6 @@ namespace KYFuncLite {
 			}
 		}
 
-		inline void WSACleanUp() const {
-			int32_t _res = WSACleanup();
-
-			if (_res < 0) {
-				throw exception("WSA clean up error");
-			}
-		}
-
 		//operator 
 		inline Socket& operator= (const SOCKET& sockObj) {
 			this->_socket == sockObj;
@@ -209,6 +214,11 @@ namespace KYFuncLite {
 		}
 
 	private:
+		SOCKET _socket;
+
+#ifdef _WIN32
+	private:
+		WSADATA _wsdata;
 		inline const void __openWinSocket() {
 			int32_t _res = WSAStartup(0x202, &this->_wsdata);
 			if (_res < 0) {
@@ -216,10 +226,14 @@ namespace KYFuncLite {
 			}
 		}
 
+		inline void __WSACleanUp() const {
+			int32_t _res = WSACleanup();
 
-	private:
-		SOCKET _socket;
-		WSADATA _wsdata;
+			if (_res < 0) {
+				throw exception("WSA clean up error");
+			}
+		}
+#endif // _WIN32
 
 	};
 

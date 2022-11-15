@@ -5,5 +5,10 @@
         "tuple": "cpp",
         "utility": "cpp",
         "xstring": "cpp"
-    }
+    },
+    "cSpell.words": [
+        "KYFUNC",
+        "WSADATA",
+        "wsdata"
+    ]
 }

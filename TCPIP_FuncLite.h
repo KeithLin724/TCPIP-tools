@@ -13,7 +13,7 @@ namespace KYFuncLite {
 			sock.setSocket(Socket::Af_Inet, Socket::Stream, Socket::Normal);
 
 			auto& tcpServer = make_sockaddr(Socket::Af_Inet, htons(Port), htonl(INADDR_ANY));
-			
+
 			sock.BindBuilder(tcpServer);
 			sock.ListenerBuilder(SOMAXCONN);
 		}
@@ -29,9 +29,9 @@ namespace KYFuncLite {
 
 		try {
 			sock.setSocket(Socket::Af_Inet, Socket::Stream, Socket::Normal);
-			
+
 			auto& tcpClients = make_sockaddr(Socket::Af_Inet, htons(R_Port), inet_addr(IP.c_str()));
-			
+
 			sock.ConnectorBuilder(tcpClients);
 		}
 		catch (const std::exception& e) {
@@ -67,7 +67,7 @@ namespace KYFuncLite {
 		udpClient = make_sockaddr(AF_INET, htons(R_Port), inet_addr(IP.c_str()));
 	}
 
-	
+
 	/// ///////////////////////////////
 	inline Socket& TCP_Server(const std::uint16_t& Port) {
 		Socket sock;
@@ -89,24 +89,26 @@ namespace KYFuncLite {
 
 	inline SOCKET& Fast_TCP_Server_Builder(const std::uint16_t& Port) {
 		SOCKET tcpSock;
-		WSADATA  wsadata;
 		std::int32_t err;
-		sockaddr_in  tcpserver;
+		sockaddr_in  tcpServer;
 
-		// 1. ¶}±Ò TCP Server
+#ifdef _WIN32 // for window version 
+		WSADATA  wsadata;
+		// 1. ï¿½}ï¿½ï¿½ TCP Server
 		if ((err = WSAStartup(0x202, &wsadata)) != 0) {
 			throw std::invalid_argument("WSA ERROR");
 		}
-			
+#endif
+
 		if ((tcpSock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
 			throw std::invalid_argument("Socket error");
 		}
 
-		tcpserver.sin_family = AF_INET;
-		tcpserver.sin_port = htons(Port);
-		tcpserver.sin_addr.s_addr = htonl(INADDR_ANY);
+		tcpServer.sin_family = AF_INET;
+		tcpServer.sin_port = htons(Port);
+		tcpServer.sin_addr.s_addr = htonl(INADDR_ANY);
 
-		if (bind(tcpSock, (sockaddr*)&tcpserver, sizeof(tcpserver)) < 0) {
+		if (bind(tcpSock, (sockaddr*)&tcpServer, sizeof(tcpServer)) < 0) {
 			throw std::invalid_argument("bind error");
 		}
 		if ((err = listen(tcpSock, SOMAXCONN)) < 0) {
@@ -137,23 +139,25 @@ namespace KYFuncLite {
 
 	inline SOCKET& Fast_TCP_Client_Builder(const std::uint16_t& R_Port, const std::string& IP) {
 		SOCKET tcpSock;
-		WSADATA  wsadata;
 		std::int32_t err;
-		sockaddr_in  tcpclient;
+		sockaddr_in  tcpClient;
 
+#ifdef _WIN32 // for windows version 
+		WSADATA  wsadata;
 		if ((err = WSAStartup(0x202, &wsadata)) != 0) {
 			throw std::invalid_argument("WSA ERROR");
 		}
+#endif
 
 		if ((tcpSock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
 			throw std::invalid_argument("Socket error");
 		}
 
-		tcpclient.sin_family = AF_INET;
-		tcpclient.sin_port = htons(R_Port);
-		tcpclient.sin_addr.s_addr = inet_addr(IP.c_str());
+		tcpClient.sin_family = AF_INET;
+		tcpClient.sin_port = htons(R_Port);
+		tcpClient.sin_addr.s_addr = inet_addr(IP.c_str());
 
-		if (err = connect(tcpSock, (sockaddr*)&tcpclient, sizeof(tcpclient)) < 0) {
+		if (err = connect(tcpSock, (sockaddr*)&tcpClient, sizeof(tcpClient)) < 0) {
 			throw std::invalid_argument("connect error");
 		};
 
@@ -176,7 +180,7 @@ namespace KYFuncLite {
 		return sock;
 	}
 
-	inline std::pair<Socket , sockaddr>& UDP_Client(const WORD& R_Port, const string& IP) {
+	inline std::pair<Socket, sockaddr>& UDP_Client(const WORD& R_Port, const string& IP) {
 		std::pair<Socket, sockaddr> res;
 
 		try {
@@ -191,7 +195,7 @@ namespace KYFuncLite {
 		return res;
 	}
 
-	
+
 }
 
 #endif // !__TCPIP_FUNCLITE__
