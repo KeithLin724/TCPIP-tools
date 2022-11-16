@@ -1,14 +1,11 @@
 {
-    "files.associations": {
-        "iosfwd": "cpp",
-        "compare": "cpp",
-        "tuple": "cpp",
-        "utility": "cpp",
-        "xstring": "cpp"
-    },
-    "cSpell.words": [
-        "KYFUNC",
-        "WSADATA",
-        "wsdata"
-    ]
+  "files.associations": {
+    "iosfwd": "cpp",
+    "compare": "cpp",
+    "tuple": "cpp",
+    "utility": "cpp",
+    "xstring": "cpp",
+    "memory": "cpp"
+  },
+  "cSpell.words": ["KYFUNC", "WSADATA", "wsdata"]
 }
