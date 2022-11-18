@@ -195,7 +195,7 @@ namespace KYFuncLite {
 		return res;
 	}
 	// for pch.h
-//#ifdef PCH_H
+#ifdef PCH_H
 	namespace MfcTools {
 		inline SOCKET& Fast_TCP_Server_Builder(WORD Port, DWORD EVENT, HWND Hwnd) {
 			SOCKET tcpSock;
@@ -265,7 +265,7 @@ namespace KYFuncLite {
 
 
 	}
-	//#endif
+#endif
 
 
 
