@@ -194,6 +194,83 @@ namespace KYFuncLite {
 
 		return res;
 	}
+	// for pch.h
+//#ifdef PCH_H
+	namespace MfcTools {
+		inline SOCKET& Fast_TCP_Server_Builder(WORD Port, DWORD EVENT, HWND Hwnd) {
+			SOCKET tcpSock;
+			std::int32_t err;
+			sockaddr_in  tcpServer;
+
+
+			WSADATA  wsadata;
+			// 1. �}�� TCP Server
+			if ((err = WSAStartup(0x202, &wsadata)) != 0) {
+				throw std::invalid_argument("WSA ERROR");
+			}
+
+
+			if ((tcpSock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+				throw std::invalid_argument("Socket error");
+			}
+
+			// Set Asynchronized Mode
+			if ((err = WSAAsyncSelect(tcpSock, Hwnd, EVENT, FD_ACCEPT | FD_WRITE | FD_READ | FD_CLOSE)) < 0) {
+				throw std::invalid_argument("WSA Select error");
+			}
+
+			tcpServer.sin_family = AF_INET;
+			tcpServer.sin_port = htons(Port);
+			tcpServer.sin_addr.s_addr = htonl(INADDR_ANY);
+
+			if (bind(tcpSock, (sockaddr*)&tcpServer, sizeof(tcpServer)) < 0) {
+				throw std::invalid_argument("bind error");
+			}
+			if ((err = listen(tcpSock, SOMAXCONN)) < 0) {
+				throw std::invalid_argument("listen function error");
+			};
+
+			return tcpSock;
+		}
+
+		inline SOCKET& Fast_TCP_Client_Builder(const WORD& R_Port, const std::string& IP, DWORD EVENT, HWND Hwnd) {
+			SOCKET tcpSock;
+			std::int32_t err;
+			sockaddr_in  tcpClient;
+
+			WSADATA  wsadata;
+			if ((err = WSAStartup(0x202, &wsadata)) != 0) {
+				throw std::invalid_argument("WSA ERROR");
+			}
+
+			if ((tcpSock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+				throw std::invalid_argument("Socket error");
+			}
+
+			// Set Asynchronized Mode
+			if ((err = WSAAsyncSelect(tcpSock, Hwnd, EVENT, FD_CONNECT | FD_WRITE | FD_READ | FD_CLOSE)) < 0) {
+				throw std::invalid_argument("WSA Select error");
+			}
+
+			tcpClient.sin_family = AF_INET;
+			tcpClient.sin_port = htons(R_Port);
+			tcpClient.sin_addr.s_addr = inet_addr(IP.c_str());
+
+			if (err = connect(tcpSock, (sockaddr*)&tcpClient, sizeof(tcpClient)) < 0) {
+				throw std::invalid_argument("connect error");
+			};
+
+			return tcpSock;
+		}
+
+
+	}
+	//#endif
+
+
+
+
+
 
 
 }
