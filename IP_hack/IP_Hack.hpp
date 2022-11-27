@@ -26,12 +26,12 @@ namespace KYFunc {
             IP2Location_close(IP2LocationObj);
         }
 
-        IP2LocationRecord* get_ip_hack(std::string IP) {
+        IP2LocationRecord* get_ip_hack(const std::string& IP) {
             auto record = IP2Location_get_all(IP2LocationObj, (char*)IP.c_str());
             return record;
         }
 
-        IP_Data get_IP_data(std::string IP) {
+        IP_Data get_IP_data(const std::string& IP) {
             IP_Data data_ip;
             auto record = IP2Location_get_all(IP2LocationObj, (char*)IP.c_str());
 
