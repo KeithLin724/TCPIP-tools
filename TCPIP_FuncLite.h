@@ -197,7 +197,7 @@ namespace KYFuncLite {
 	// for pch.h
 #ifdef PCH_H
 	namespace MfcTools {
-		inline SOCKET& Fast_TCP_Server_Builder(WORD Port, DWORD EVENT, HWND Hwnd) {
+		inline SOCKET Fast_TCP_Server_Builder(WORD Port, DWORD EVENT, HWND Hwnd) {
 			SOCKET tcpSock;
 			std::int32_t err;
 			sockaddr_in  tcpServer;
@@ -233,7 +233,7 @@ namespace KYFuncLite {
 			return tcpSock;
 		}
 
-		inline SOCKET& Fast_TCP_Client_Builder(const WORD& R_Port, const std::string& IP, DWORD EVENT, HWND Hwnd) {
+		inline SOCKET Fast_TCP_Client_Builder(const WORD& R_Port, const std::string& IP, DWORD EVENT, HWND Hwnd) {
 			SOCKET tcpSock;
 			std::int32_t err;
 			sockaddr_in  tcpClient;
@@ -264,12 +264,8 @@ namespace KYFuncLite {
 		}
 
 
-	}
+}
 #endif
-
-
-
-
 
 
 
